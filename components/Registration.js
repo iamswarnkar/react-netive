@@ -26,32 +26,80 @@ export default function Registration() {
     company_name: "",
     password: "",
     confirm_password: "",
-    gender: "",
+    gender: 1,
     image: "img/path",
     reference_name: "",
-    reference_mobile_no:null,
+    reference_mobile_no: null,
     reference_relation: "",
     alternate_mobile_no: null,
-    service_category: "",
+    service_category: null,
     experience: "",
-    country: "",
-    state: "",
-    city: "",
+    country: 1,
+    state: 2,
+    city: 3,
     pin_code: "",
-    lat: "",
-    long: "",
-    id_proof: "",
+    lat: "123",
+    long: "2333",
+    id_proof: "file/path",
     term_condition: "",
-    device_token: "",
+    device_token: null,
   });
 
   // console.log("formData", formData);
 
-  function handleSubmit(){
-    console.log("formData",formData)
+  function handleSubmit() {
+    if (formData.password !== formData.confirm_password) {
+      alert("Password and confirm Password Must be same ");
+    } else if (
+      formData.name === "" ||
+      formData.mobile_no === "" ||
+      formData.email === "" ||
+      formData.company_name === "" ||
+      formData.reference_name === "" ||
+      formData.reference_mobile_no === "" ||
+      formData.service_category === "" ||
+      formData.experience === "" ||
+      formData.pin_code === "" ||
+      formData.password === "" ||
+      formData.confirm_password === ""
+    ) {
+    } else if (formData.term_condition === "") {
+      alert("Please agree Term Condition");
+    } else {
+      alert("Registration Done");
+    }
+  }
+  // console.log(formData);
+
+  function getService(data) {
+    setFormData({ ...formData, service_category: data });
   }
 
-  // useEffect(() => {}, []);
+  async function submitForm() {
+
+    try {
+      const countryData = await fetch(
+        `http://182.76.237.238/~wellness/wellness/api/provider_registration`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+      const response = await countryData.json();
+      
+      console.log("response", response);
+    } catch (err) {
+      alert(err);
+    }
+  }
+
+  useEffect(() => {
+    submitForm();
+  }, []);
   async function handleFile() {
     try {
       let result = await DocumentPicker.pick();
@@ -150,7 +198,7 @@ export default function Registration() {
         />
         <TextInput
           style={styles.input}
-          value={formData.reference_name}
+          value={formData.reference_mobile_no}
           onChangeText={(text) =>
             setFormData({ ...formData, reference_mobile_no: text })
           }
@@ -179,7 +227,7 @@ export default function Registration() {
           placeholderTextColor="#fff"
           maxLength={10}
         />
-        <ServiceList />
+        <ServiceList getService={getService} />
         <TextInput
           style={styles.input}
           value={formData.experience}
@@ -195,12 +243,6 @@ export default function Registration() {
           placeholder="Country"
           placeholderTextColor="#fff"
         /> */}
-        
-        <TextInput
-          style={styles.input}
-          placeholder="City"
-          placeholderTextColor="#fff"
-        />
         <TextInput
           style={styles.input}
           value={formData.pin_code}
@@ -217,17 +259,39 @@ export default function Registration() {
           <Checkbox
             style={styles.checkbox}
             value={isChecked}
-            onValueChange={(e)=>{
-              setChecked(!isChecked)
-              setFormData({ ...formData, term_condition: !isChecked ? 1: null })
+            onValueChange={(e) => {
+              setChecked(!isChecked);
+              setFormData({
+                ...formData,
+                term_condition: !isChecked ? 1 : null,
+              });
             }}
             color={isChecked ? "#56ffff" : undefined}
           />
           <Text style={styles.paragraph}>I agree to terms and conditions.</Text>
         </View>
-        <TouchableOpacity onPress={handleSubmit}>
-          <View style={styles.btn}>
-            <Text style={styles.paragraph}>Submit</Text>
+        <TouchableOpacity
+          disabled={formData.term_condition !== null ? false : true}
+          style={[
+            styles.input,
+            {
+              marginBottom: 80,
+              opacity: formData.term_condition !== null ? 1 : 0.2,
+            },
+          ]}
+          onPress={handleSubmit}
+        >
+          <View>
+            <Text
+              style={[
+                styles.paragraph,
+                {
+                  alignSelf: "center",
+                },
+              ]}
+            >
+              Submit
+            </Text>
           </View>
         </TouchableOpacity>
       </View>

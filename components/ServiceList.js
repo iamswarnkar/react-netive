@@ -1,13 +1,11 @@
 import {
   View,
   Text,
-  TouchableOpacity,
-  FlatList,
-  ScrollView,
+  TouchableOpacity
 } from "react-native";
 import React, { useState, useEffect } from "react";
 
-export default function ServiceList() {
+export default function ServiceList({getService}) {
   const [clicked, setClicked] = useState(false);
   const [servicesList, setServicesList] = useState([{ key: null, value: "" }]);
   const [selectedService, setSelectedService] = useState("");
@@ -23,7 +21,8 @@ export default function ServiceList() {
   }
   // console.log("selectedService");
   function handlePress(item) {
-    console.log(item);
+    // console.log(item);
+    getService(item.key)
     setSelectedService(item.value);
     setClicked(false);
   }
@@ -75,22 +74,20 @@ export default function ServiceList() {
         >
           {servicesList.map((item) => {
             return (
-              <ScrollView>
-                <TouchableOpacity
-                  key={item.key}
-                  style={{
-                    width: "100%",
-                    alignSelf: "center",
-                    height: 50,
-                    justifyContent: "center",
-                    borderBottomWidth: 0.5,
-                    borderColor: "#8e8e8e",
-                  }}
-                  onPress={() => handlePress(item)}
-                >
-                  <Text style={{ color: "#fff" }}>{item.value}</Text>
-                </TouchableOpacity>
-              </ScrollView>
+              <TouchableOpacity
+                key={item.key}
+                style={{
+                  width: "100%",
+                  alignSelf: "center",
+                  height: 50,
+                  justifyContent: "center",
+                  borderBottomWidth: 0.5,
+                  borderColor: "#8e8e8e",
+                }}
+                onPress={() => handlePress(item)}
+              >
+                <Text style={{ color: "#fff" }}>{item.value}</Text>
+              </TouchableOpacity>
             );
           })}
         </View>

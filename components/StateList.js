@@ -1,15 +1,17 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import React, { useState, useEffect } from "react";
+import City from "./City";
 
 export default function StateList({ countryID }) {
   const [clicked, setClicked] = useState(false);
   const [stateList, setStateList] = useState([{ key: null, value: "" }]);
+  const [stateID, setStateID] = useState("");
   const [selectedState, setSelectedState] = useState("");
 
   async function fetchState(countryID) {
-    console.log("fuctio call",countryID);
+    console.log("function call", countryID);
     if (countryID !== "") {
-      try{
+      try {
         const countryData = await fetch(
           `http://182.76.237.238/~wellness/wellness/api/state_list/`,
           {
@@ -18,23 +20,24 @@ export default function StateList({ countryID }) {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({country_id: countryID,})
+            body: JSON.stringify({ country_id: countryID }),
           }
         );
         const response = await countryData.json();
-        // const data = response.data.map((item) => {
-        //   return { key: item.id, value: item.state_name };
-        // });
-        // setStateList(data);
+        const data = response.data.map((item) => {
+          return { key: item.id, value: item.state_name };
+        });
+        setStateList(data);
         console.log("response", response);
-      }catch(err){
-        alert(err)
+      } catch (err) {
+        alert(err);
       }
     }
   }
 
   function handlePress(item) {
     setSelectedState(item.value);
+    setStateID(item.id);
     setClicked(false);
   }
 
@@ -66,7 +69,9 @@ export default function StateList({ countryID }) {
             alignItems: "center",
           }}
           onPress={() => {
-            setClicked(!clicked);
+            countryID == ""
+              ? alert("Please Select Country First")
+              : setClicked(!clicked);
           }}
         >
           <Text style={{ color: "#fff", marginVertical: 5 }}>
@@ -107,6 +112,7 @@ export default function StateList({ countryID }) {
           </View>
         ) : null}
       </View>
+      <City stateID={stateID} />
     </>
   );
 }

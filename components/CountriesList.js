@@ -18,13 +18,11 @@ export default function CountriesList() {
       return { key: item.id, value: item.country_name };
     });
     setCountriesList(data);
-    console.log(data)
   }
 
   function handlePress(item) {
     setSelectedCountry(item.value);
     setCountryID(item.key);
-
     setClicked(false);
   }
 
@@ -97,6 +95,7 @@ export default function CountriesList() {
         ) : null}
       </View>
       <StateList countryID={countryID} />
+      
     </>
   );
 }
