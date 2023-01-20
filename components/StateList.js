@@ -20,14 +20,14 @@ export default function StateList({ countryID }) {
               Accept: "application/json",
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({ country_id: countryID }),
+            body: JSON.stringify({ country_id: 1 }),
           }
         );
         const response = await countryData.json();
-        const data = response.data.map((item) => {
-          return { key: item.id, value: item.state_name };
-        });
-        setStateList(data);
+        // const data = response.data.map((item) => {
+        //   return { key: item.id, value: item.state_name };
+        // });
+        // setStateList(data);
         console.log("response", response);
       } catch (err) {
         alert(err);

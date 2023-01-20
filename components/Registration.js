@@ -63,9 +63,11 @@ export default function Registration() {
       formData.password === "" ||
       formData.confirm_password === ""
     ) {
+      alert("All field Required ");
     } else if (formData.term_condition === "") {
       alert("Please agree Term Condition");
     } else {
+      submitForm();
       alert("Registration Done");
     }
   }
@@ -97,9 +99,6 @@ export default function Registration() {
     }
   }
 
-  useEffect(() => {
-    submitForm();
-  }, []);
   async function handleFile() {
     try {
       let result = await DocumentPicker.pick();

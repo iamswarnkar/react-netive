@@ -8,7 +8,7 @@ export default function CountriesList() {
     { key: null, value: "" },
   ]);
   const [selectedCountry, setSelectedCountry] = useState("");
-  const [countryID, setCountryID] = useState("");
+  const [countryID, setCountryID] = useState(1);
   async function fetchCountry() {
     const countryData = await fetch(
       "http://182.76.237.238/~wellness/wellness/api/country_list"
