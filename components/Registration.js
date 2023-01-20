@@ -42,7 +42,7 @@ export default function Registration() {
     long: "2333",
     id_proof: "file/path",
     term_condition: "",
-    device_token: null,
+    device_token: "null",
   });
 
   // console.log("formData", formData);
@@ -63,6 +63,7 @@ export default function Registration() {
       formData.password === "" ||
       formData.confirm_password === ""
     ) {
+      console.log(formData);
       alert("All field Required ");
     } else if (formData.term_condition === "") {
       alert("Please agree Term Condition");
